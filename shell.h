@@ -16,5 +16,6 @@ int find_path(char **command);
 void initialise_shell(char **input, size_t *size);
 void check_exit(char **input);
 int execute(char *command, char *args[], int *status);
+void builtin_cd(char *args);
 
 #endif
