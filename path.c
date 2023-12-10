@@ -21,7 +21,7 @@ char *find_path(char **command)
 		{
 			strcat(all_path, "/");
 		}
-		strcat(all_path, command);
+		strcat(all_path, *command);
 
 	/* Checking for file if it exist and is executable */
 		if (access(all_path, F_OK) == 0 && access(all_path, X_OK) == 0)
@@ -30,7 +30,7 @@ char *find_path(char **command)
 			return (strdup(all_path));
 		}
 		folder = strtok(NULL, ":"); /* Proceed to the next folder */
-		}
+	}
 		free(path_copy);
 		return (command);
 }

@@ -27,7 +27,11 @@ int main(void)
 		if (command != NULL)/* function to fork and execute command*/
 			execute(command, args, &status);
 		else
-			printf("%s: command not found\n", args[0]);
+		{
+			strcpy(command, args[0]);
+			strcat(command, ": command not found\n");
+			write(STDOUT_FILENO, command, sizeof(command));
+		}
 		free(command);
 		free(input);
 	}
