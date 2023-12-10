@@ -21,7 +21,7 @@ int main(void)
 		initialise_shell(&input, &size);
 		getline(&input, &size, stdin);
 		make_token(args, &input);
-		check_exit(input);
+		check_exit(&input);
 
 		command = args[0];
 		if (command != NULL)/* function to fork and execute command*/
