@@ -6,14 +6,17 @@
  * Return: All PATH of command  if found or NULL
  */
 
-char *find_path(char **command)
+int find_path(char **command)
 {
-	char *path = getenv("PATH");
-	char *path_copy = strdup(path);
-
-	char all_path[1024];
+	char *path_copy = strdup( getenv("PATH"));
+	char *all_path = malloc(1024);
 	char *folder = strtok(path_copy, ":");
 
+	if(all_path == NULL)
+	{
+		free(path_copy);
+		return (EXIT_FAILURE);
+	}
 	while (folder != NULL) /* Looping through to iterate */
 	{
 		strcpy(all_path, folder);
@@ -27,10 +30,12 @@ char *find_path(char **command)
 		if (access(all_path, F_OK) == 0 && access(all_path, X_OK) == 0)
 		{
 			free(path_copy);
-			return (strdup(all_path));
+			*command = all_path;
+			return (EXIT_SUCCESS);
 		}
 		folder = strtok(NULL, ":"); /* Proceed to the next folder */
 	}
 		free(path_copy);
-		return (command);
+		free(all_path);
+		return (EXIT_FAILURE);
 }
