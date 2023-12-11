@@ -19,6 +19,6 @@ void initialise_shell(char **input, size_t *size);
 void check_exit(char **input);
 int execute(char *command, char *args[], int *status);
 void builtin_cd(char *args);
-int isDelimiter(char character, char *delimiter);
+int isDelim(char character, char *delimiter);
 
 #endif
