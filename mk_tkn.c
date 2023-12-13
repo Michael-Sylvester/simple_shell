@@ -10,12 +10,11 @@ void make_token(char *args[], char *userinput)
 
 	temp = strtok(userinput, delimiter);
 
-	while(temp != NULL)
-		{
-			args[n] = temp;
-			n++;
-			temp = strtok(NULL, delimiter);
-		}
+	while (temp != NULL)
+	{
+		args[n] = temp;
+		n++;
+		temp = strtok(NULL, delimiter);
+	}
 	args[n] = NULL;
-	return;
 }

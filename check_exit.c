@@ -9,7 +9,7 @@ int check_exit(char *input)
 	char *quit = "exit";
 
 	if (strcmp(input, quit) == 0)
-		return(0);
+		return (0);
 
 	return (1);
 
