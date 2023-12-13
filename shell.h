@@ -22,5 +22,6 @@ int check_env(char *input);
 int execute(char *command, char *args[], int *status);
 void builtin_cd(char *args);
 int isDelim(char character, char *delimiter);
+ssize_t my_getline(char **lineptr, size_t *n, int fd);
 
 #endif
