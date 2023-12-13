@@ -22,7 +22,7 @@ int check_exit(char *input);
 int check_env(char *input);
 int execute(char *command, char *args[], int *status);
 int builtin_cd(char *args[]);
-int isDelim(char character, char *delimiter);
+void *_realloc(void *ptr, size_t old_size, size_t new_size);
 ssize_t my_getline(char **lineptr, size_t *n, int fd);
 int _putchar(char c);
 
