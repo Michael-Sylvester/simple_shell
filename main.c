@@ -22,12 +22,11 @@ int main(void)
 		{
 			free(input);
 			start = 0;
-			write(STDOUT_FILENO, "\n", 1);
-			break;
+			exit(status);
 		}
-		if (builtin_cd(args) == 0)
+		if ((status = builtin_cd(args)) == 0)
 			free(input);
-		else if (check_env(args[0]) == 0)
+		else if ((status = check_env(args[0])) == 0)
 			free(input);
 		else
 		{
