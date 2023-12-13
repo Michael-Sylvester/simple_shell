@@ -21,39 +21,41 @@ char **split_str_char(char *input, char *delim)
 
 	while (input[my_input] != '\0')
 	{
-		if (!isDelim(input[my_input], delim) && (isDelim(input[my_input + 1], delim) || !input[my_input + 1]))
+		if (input[my_input] != *delim && (input[my_input + 1] == *delim || !input[my_input + 1]))
 		{
 			numWords++;
 			my_input++;
 		}
 		if (numWords == 0)
+		{
+			free(letters);
 			return (NULL);
-
+		}
+	}
 		letters = malloc((1 + numWords) * sizeof(char *));
 		if (!letters)
 			return (NULL);
 		for (my_input = 0, countWord = 0; countWord < numWords; countWord++)
 		{
-			while (isDelim(input[my_input], delim))
+			while (input[my_input] == *delim)
 				my_input++;
 			len = 0;
-			while (!isDelim(input[my_input + len], delimiter) && input[my_input + len])
+			while (input[my_input + len] != *delim && input[my_input + len])
 				len++;
 			letters[countWord] = malloc((len + 1) * sizeof(char));
 			if (!letters[countWord])
 			{
-				for (len = 0; len < countWord; len++)
-					free(letters[len]);
+				for (y = 0; y < countWord; y++)
+					free(letters[y]);
 				free(letters);
 				return (NULL);
 			}
 			for (y = 0; y < len; y++)
 				letters[countWord][y] = input[my_input++];
-			letters[countWord][len] = 0;
+			letters[countWord][len] = '\0';
 		}
 		letters[countWord] = (NULL);
 		return (letters);
-	}
 }
 /**
  * split_string - This splits strings into letters
@@ -83,10 +85,10 @@ char **split_string(char *input, char delim)
 		return (NULL);
 	for (_input = 0, countWord = 0; countWord < numWords; countWord++)
 	{
-		while (input[_input] == delim && input[_input] != delim)
+		while (input[_input] == delim && input[_input] != '\0')
 			_input++;
 		len = 0;
-		while (input[_input + len] != delim && input[_input + len] && input[_input + len] != delim)
+		while (input[_input + len] != delim && input[_input + len] && input[_input + len] != '\0')
 			len++;
 		letters[countWord] = malloc((len + 1) * sizeof(char));
 		if (!letters[countWord])
