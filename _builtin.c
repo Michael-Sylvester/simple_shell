@@ -5,29 +5,33 @@
  * @args: The argument passed to the program
  */
 
-void builtin_cd(char *args)
+int builtin_cd(char *args[])
 {
-	if (args == NULL)
-	{
-		char *home = getenv("HOME");
+	char *home = getenv("HOME");
 
-	if (home == NULL)
+	if (strcmp(args[0], "cd") != 0)
+		return (1);
+	if (args[1] == NULL)
 	{
-		perror("cd: HOME not set\n");
+		strcpy(home, getenv("HOME"));
+		if (home == NULL)
+		{	perror("cd: HOME not set\n");
+			return (1);
+		}
+		if (chdir(home) != 0)
+		{
+			perror("");
+			return (1);
+		}
+		else 
+			return (0);
 	}
 	else
 	{
-	if (chdir(home) != 0)
-	{
-		perror("Directory couldn't change");
-	}
-	}
-	}
-	else
-	{
-	if (chdir(args) != 0)
-	{
-		perror("Directory couldn't change");
-	}
+		if (chdir(args[1]) == 0)
+			return (0);
+		else
+			perror(args[1]);
+		return (1);
 	}
 }

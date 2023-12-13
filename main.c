@@ -25,7 +25,9 @@ int main(void)
 			write(STDOUT_FILENO, "\n", 1);
 			break;
 		}
-		if (check_env(args[0]) == 0)
+		if (builtin_cd(args) == 0)
+			free(input);
+		else if (check_env(args[0]) == 0)
 			free(input);
 		else
 		{
