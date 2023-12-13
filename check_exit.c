@@ -4,11 +4,11 @@
  *@input: the tokenized input from the user
  *Return: nothing
  */
-int check_exit(char **input)
+int check_exit(char *input)
 {
 	char *quit = "exit";
 
-	if (**input == *quit)
+	if (strcmp(input, quit) == 0)
 		return(0);
 
 	return (1);

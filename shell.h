@@ -17,7 +17,7 @@ void make_token(char *args[], char *userinput);
 void non_int_shell(char **input, char *args[], size_t *size);
 int find_path(char **command);
 void initialise_shell(char **input, size_t *size);
-int check_exit(char **input);
+int check_exit(char *input);
 int check_env(char *input); 
 int execute(char *command, char *args[], int *status);
 void builtin_cd(char *args);

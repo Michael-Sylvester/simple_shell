@@ -22,8 +22,8 @@ int main(void)
 		initialise_shell(&input, &size);
 		read = getline(&input, &size, stdin);
 		make_token(args, input);
-		
-		if(check_exit(&input) == 0 || read == EOF)
+
+		if(check_exit(input) == 0 || read == EOF)
 		{
 			free(input);
 			start = 0;
@@ -31,25 +31,23 @@ int main(void)
 			break;
 		}
 
-		/*if (check_env(args[0]) == 0)
-		{
-			printf("%s\n", input);
+		if (check_env(args[0]) == 0)
 			free(input);
-		}
-		else*/
-		
-		command = args[0];
-		if (find_path(&command) == EXIT_SUCCESS && check_env(args[0]) != 0)
-			/* function to fork and execute command*/
-			execute(command, args, &status);
 		else
 		{
-			strcpy(command, args[0]);
-			strcat(command, ": command not found\n");
-			write(STDOUT_FILENO, command, strlen(command));
+			command = args[0];
+			if (find_path(&command) == EXIT_SUCCESS)/* function to fork and execute command*/
+			{
+				execute(command, args, &status);
+			}
+			else
+			{
+				strcpy(command, args[0]);
+				strcat(command, ": command not found\n");
+				write(STDOUT_FILENO, command, strlen(command));
+			}
+			free(command);
 		}
-		free(command);
-	
 	}
 	return (0);
 }
