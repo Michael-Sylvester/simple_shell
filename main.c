@@ -1,4 +1,5 @@
 #include "shell.h"
+
 /**
  *main - initializes variables for simple shell and
  *       calls all other functions of the shell
@@ -12,64 +13,86 @@ int main(void)
 	char *command;
 	char *args[100];
 	int status;
+	int read;
 
-	if (non_int_shell(input, args, &size))
-		return (0);
+	non_int_shell(&input, args, &size);
 
-	while (start)
+	while (start > 0)
 	{
 		initialise_shell(&input, &size);
-		getline(&input, &size, stdin);
-		make_token(args, &input);
-		check_exit(&input);
+		read = getline(&input, &size, stdin);
+		make_token(args, input);
+		
+		if(check_exit(&input) == 0 || read == EOF)
+		{
+			free(input);
+			start = 0;
+			write(STDOUT_FILENO, "\n", 1);
+			break;
+		}
 
+		/*if (check_env(args[0]) == 0)
+		{
+			printf("%s\n", input);
+			free(input);
+		}
+		else*/
+		
 		command = args[0];
-		if (command != NULL)/* function to fork and execute command*/
+		if (find_path(&command) == EXIT_SUCCESS && check_env(args[0]) != 0)
+			/* function to fork and execute command*/
 			execute(command, args, &status);
 		else
 		{
 			strcpy(command, args[0]);
 			strcat(command, ": command not found\n");
-			write(STDOUT_FILENO, command, sizeof(command));
+			write(STDOUT_FILENO, command, strlen(command));
 		}
 		free(command);
-		free(input);
+	
 	}
 	return (0);
 }
 
 /**
- *Non_int_shell - check if shell is being used non interactively
+ *non_int_shell - check if shell is being used non interactively
  *@input: the user input from stdin
  *@args:the list of arguments for the command
  *@size: the size of the buffer for allocating memory
  *Return: 1 for success and 0 for no command given
  */
-int Non_int_shell(char *input, char *args[], size_t *size)
+void non_int_shell(char **input, char *args[], size_t *size)
 {
 	char *command;
 
 	if (!isatty(fileno(stdin)))
 	{
-		input = malloc(*size);
-		if (input == NULL)
+		*input = malloc(*size);
+		if (*input == NULL)
 			exit(EXIT_FAILURE);
 
-		getline(&input, size, stdin);
-		make_token(args, &input);
+		getline(input, size, stdin);
+		make_token(args, *input);
 		command = args[0];
 
-		if (find_path(&command))
+		if (find_path(&command) == EXIT_SUCCESS)
 		{
 			execve(command, args, NULL);
 			/* This line runs only if execve fails */
-			free(input);
+			free(*input);
 			perror("execve");
 			exit(EXIT_FAILURE);
 		}
+		else
+		{
+			strcpy(command, args[0]);
+			strcat(command, ": command not found\n");
+			write(STDOUT_FILENO, command, strlen(command));
+		}
+		free(*input);
 	}
-	free(input);
-	return (0);
+
+	return;
 }
 /**
  *execute - executes commands that are viable
@@ -81,18 +104,17 @@ int Non_int_shell(char *input, char *args[], size_t *size)
 int execute(char *command, char *args[], int *status)
 {
 	pid_t child;
-
 	child = fork();
 	if (child == 0)
 	{
 		if (execve(command, args, NULL) == -1)
-			perror("exceve");
+			perror("execve");
 		exit(EXIT_FAILURE);
 	}
 	else if (child > 0)
 	{
 		waitpid(child, status, 0);
-		return (0);
+		return (EXIT_SUCCESS);
 	}
 	else
 	{

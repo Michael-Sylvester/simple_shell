@@ -4,13 +4,13 @@
  *@input: the tokenized input from the user
  *Return: nothing
  */
-void check_exit(char **input)
+int check_exit(char **input)
 {
-	char *quit = "quit";
+	char *quit = "exit";
 
-	if (*input == quit)
-		exit(EXIT_SUCCESS);
+	if (**input == *quit)
+		return(0);
 
-	return;
+	return (1);
 
 }
