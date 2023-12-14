@@ -7,6 +7,8 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/errno.h>
 
 extern char **environ;
 /* Buffer */
@@ -24,6 +26,9 @@ int execute(char *command, char *args[], int *status);
 int builtin_cd(char *args[]);
 void *_realloc(void *ptr, size_t old_size, size_t new_size);
 ssize_t my_getline(char **lineptr, size_t *n, int fd);
+char *_getenv(const char *name);
+int _strlen(const char *s);
+ssize_t _setenv(char **input, ssize_t *status);
 int _putchar(char c);
 
 #endif
