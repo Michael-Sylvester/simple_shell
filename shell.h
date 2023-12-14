@@ -29,6 +29,7 @@ ssize_t my_getline(char **lineptr, size_t *n, int fd);
 char *_getenv(const char *name);
 int _strlen(const char *s);
 ssize_t _setenv(char **input, ssize_t *status);
+ssize_t _unsetenv(char **input, ssize_t *status);
 int _putchar(char c);
 
 #endif
