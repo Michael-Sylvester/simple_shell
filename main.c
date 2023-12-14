@@ -9,7 +9,7 @@ int main(void)
 {
 	int start = 1;
 	size_t size = 1024;
-	char *input = NULL,	 *command, *args[100];
+	char *input = NULL,	 *command, *args[100], *oldcwd = NULL;
 	int status,	read;
 
 	non_int_shell(&input, args, &size);
@@ -24,7 +24,7 @@ int main(void)
 			start = 0;
 			exit(status);
 		}
-		if ((status = builtin_cd(args)) == 0)
+		if ((status = builtin_cd(args, &oldcwd)) == 0)
 			free(input);
 		else if ((status = check_env(args[0])) == 0)
 			free(input);
