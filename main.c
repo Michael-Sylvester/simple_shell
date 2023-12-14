@@ -21,6 +21,7 @@ int main(void)
 		if (check_exit(input) == 0 || read == EOF)
 		{
 			free(input);
+			free(oldcwd);
 			start = 0;
 			exit(status);
 		}
