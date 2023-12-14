@@ -25,9 +25,9 @@ int main(void)
 			start = 0;
 			exit(status);
 		}
-		if ((status = builtin_cd(args, &oldcwd)) == 0)
+		if (builtin_cd(args, &oldcwd) == 0)
 			free(input);
-		else if ((status = check_env(args[0])) == 0)
+		else if (check_env(args[0]) == 0)
 			free(input);
 		else
 		{
