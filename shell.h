@@ -40,6 +40,10 @@ int _isalpha(int c);
 int _strcmp(char *s1, char *s2);
 char *_strchr(char *str, char c);
 
-#define safefree(p) _free((void **)&(p))
+#define safefree(p) _free((void **)&(p)
+void quote_mode(char **temp, char *args[], int n);
+void remove_newline(char **input);
+void freedome(char *input, char *oldcwd, int read);
+
 
 #endif
