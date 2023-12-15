@@ -2,6 +2,7 @@
 #define SHELL_H
 #include <stdio.h>
 #include <stdarg.h>
+#include <ctype.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,5 +32,14 @@ int _strlen(const char *s);
 ssize_t _setenv(char **input, ssize_t *status);
 ssize_t _unsetenv(char **input, ssize_t *status);
 int _putchar(char c);
+void _free(void **p);
+char *replace_comments(char *cmd);
+void free_string(char ***string_array);
+char *_strncpy(char *dest, const char *src, int n);
+int _isalpha(int c);
+int _strcmp(char *s1, char *s2);
+char *_strchr(char *str, char c);
+
+#define safefree(p) _free((void **)&(p))
 
 #endif
