@@ -8,6 +8,9 @@
  */
 void initialise_shell(char **input, size_t *size)
 {
+	if(*input != NULL)
+		free(*input);
+	
 	*input = malloc(*size);
 	if (*input == NULL)
 	{

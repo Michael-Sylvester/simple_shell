@@ -7,21 +7,22 @@
  */
 int main(void)
 {
-	int start = 1;
+	int start = 1, status, read;
 	size_t size = 0;
 	char *input = NULL,	 *command, *args[100], *oldcwd = NULL;
-	int status,	read;
 
-	non_int_shell(&input, args, &size);
+	if (!isatty(fileno(stdin)))
+		start = 2;
 	while (start > 0)
 	{
-		initialise_shell(&input, &size);
+		if (start == 1)
+			initialise_shell(&input, &size);
 		read = getline(&input, &size, stdin);
 		make_token(args, input);
-		if (read == 1)
+		if (read == 1 || sizeof(args[0]) == 1)
 		{
-				free(input);
-				continue;
+			free(input);
+			continue;
 		}
 		if (check_exit(input) == 0 || read == EOF)
 			freedome(input, oldcwd, read);
@@ -30,61 +31,14 @@ int main(void)
 		else if (check_env(args[0]) == 0)
 			free(input);
 		else
-		{
-			command = args[0];
-			if (find_path(&command) == EXIT_SUCCESS)
-				execute(command, args, &status); /* function to fork and execute command*/
-			else
-			{
-				strcpy(command, args[0]);
-				strcat(command, ": command not found\n");
-				write(STDOUT_FILENO, command, strlen(command));
-			}
-			free(command);
-		}
+			execute(&command, args, &status);
+		
+		if (start == 2)
+			return (status);
 	}
-	return (0);
+		return (status);
 }
 
-/**
- *non_int_shell - check if shell is being used non interactively
- *@input: the user input from stdin
- *@args:the list of arguments for the command
- *@size: the size of the buffer for allocating memory
- *Return: 1 for success and 0 for no command given
- */
-void non_int_shell(char **input, char *args[], size_t *size)
-{
-	char *command;
-
-	if (!isatty(fileno(stdin)))
-	{
-		*input = malloc(*size);
-		if (*input == NULL)
-			exit(EXIT_FAILURE);
-
-		getline(input, size, stdin);
-		make_token(args, *input);
-		command = args[0];
-
-		if (find_path(&command) == EXIT_SUCCESS)
-		{
-			execve(command, args, NULL);
-			/* This line runs only if execve fails */
-			free(*input);
-			perror("execve");
-			exit(EXIT_FAILURE);
-		}
-		else
-		{
-			strcpy(command, args[0]);
-			strcat(command, ": command not found\n");
-			write(STDOUT_FILENO, command, strlen(command));
-		}
-		free(*input);
-	}
-
-}
 /**
  *execute - executes commands that are viable
  *@command: the user input from stdin
@@ -92,30 +46,53 @@ void non_int_shell(char **input, char *args[], size_t *size)
  *@status: hold the status information about the child process
  *Return: 0 for success and 1 error/failure
  */
-int execute(char *command, char *args[], int *status)
+int execute(char **command, char *args[], int *status)
 {
 	pid_t child;
+	
+	*command = args[0];
+	if (strlen(*command) > 0)
+	{
+		if (find_path(command) == EXIT_SUCCESS)
+		{		/*execute(command, args, &status);*/
+		
 
-	child = fork();
-	if (child == 0)
-	{
-		if (execve(command, args, NULL) == -1)
-			perror("execve");
-		exit(EXIT_FAILURE);
+			child = fork();
+			if (child == 0)
+			{
+				if (execve(*command, args, NULL) == -1)
+					perror("execve");
+				exit(EXIT_FAILURE);
+			}
+			else if (child > 0)
+			{
+				waitpid(child, status, 0);
+			}
+			else
+			{
+				perror("fork");
+				exit(EXIT_FAILURE);
+			}
+
+		}
+		else
+		{
+			strcpy(*command, args[0]);
+			strcat(*command, ": command not found\n");
+			write(STDOUT_FILENO, command, strlen(*command));
+		}
 	}
-	else if (child > 0)
-	{
-		waitpid(child, status, 0);
-		return (EXIT_SUCCESS);
-	}
-	else
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
+	free(*command);
+	return (0);
 }
-
-void freedome(char *input,char *oldcwd, int read)
+/**
+ *freedome- frees the memory used by input and read
+ *@input: the user input
+ *@oldcwd: the last workingdurectory
+ *@read: value of getline
+ *Return: nothing
+ */
+void freedome(char *input, char *oldcwd, int read)
 {
 	free(input);
 	free(oldcwd);
