@@ -12,28 +12,20 @@ char *replace_comments(char *cmd)
 	char *modified_cmd;
 
 	set = _strchr(cmd, '#');
-	if (set == NULL)
-		return (cmd);
-	unset = set - cmd;
+	if (set == NULL || (set > cmd && isspace(*(set - 1))))
+		return (cmd); /*NO comment */
 
+	unset = set - cmd;
+	modified_cmd = malloc(unset + 1);
 	/* confirm if there is comment at the start of the string or follows whitespace */
-	if (unset == 0 || (unset > 0 && isspace(cmd[unset - 1])))
+	if (modified_cmd == NULL)
 	{
-		modified_cmd = malloc(unset + 1);
-		if (modified_cmd == NULL)
-		{
-			fprintf(stderr, "Memory allocation error\n");
-			safefree(modified_cmd);
-			exit(EXIT_FAILURE);
-		}
+		fprintf(stderr, "Memory allocation error\n");
+		exit(EXIT_FAILURE);
+	}
 
 		/* Copy the important part of  command into the new string */
 		_strncpy(modified_cmd, cmd, unset);
 		modified_cmd[unset] = '\0';
 		return (modified_cmd);
-	}
-	else
-	{
-		return (cmd);
-	}
 }

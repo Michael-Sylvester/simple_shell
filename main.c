@@ -9,7 +9,7 @@ int main(void)
 {
 	int start = 1, status, read;
 	size_t size = 0;
-	char *input = NULL,	 *command, *args[100], *oldcwd = NULL;
+	char *input = NULL, *command, *args[100], *oldcwd = NULL;
 
 	if (!isatty(fileno(stdin)))
 		start = 2;
@@ -32,7 +32,7 @@ int main(void)
 			free(input);
 		else
 			execute(&command, args, &status);
-		
+
 		if (start == 2)
 			return (status);
 	}
@@ -73,7 +73,7 @@ int execute(char **command, char *args[], int *status)
 				perror("fork");
 				exit(EXIT_FAILURE);
 			}
-
+			free(*command);
 		}
 		else
 		{
@@ -82,7 +82,6 @@ int execute(char **command, char *args[], int *status)
 			write(STDOUT_FILENO, command, strlen(*command));
 		}
 	}
-	free(*command);
 	return (0);
 }
 /**

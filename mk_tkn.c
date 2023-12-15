@@ -10,7 +10,7 @@ void make_token(char *args[], char *userinput)
 	char *delimiter = " ";
 	char *temp;
 	int n = 0;
-	
+
 	remove_newline(&userinput);
 	temp = strsep(&userinput, delimiter);
 
@@ -25,7 +25,10 @@ void make_token(char *args[], char *userinput)
 		if (*temp && (*temp == '"'|| *temp == '\''))
 			quote_mode(&temp, args, n);
 		else
+		{
+			temp = replace_comments(temp);
 			args[n] = temp;
+		}
 		n++;
 		temp = strsep(&userinput, delimiter);
 	}
@@ -42,7 +45,7 @@ void quote_mode(char **temp, char *args[], int n)
 	char quote = (*temp)[0];
 	char *endquote;
 	int j = 0;
-	
+
 	(*temp)++;
 	while ((*temp) + j != NULL)
 	{
@@ -51,7 +54,7 @@ void quote_mode(char **temp, char *args[], int n)
 			break;
 		if(endquote == NULL)
 		{
-			perror("\\0 missing terminating quote");
+			perror("missing terminating quote");
 			exit(-1);
 		}
 		j++;
