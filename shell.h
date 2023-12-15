@@ -31,5 +31,9 @@ int _strlen(const char *s);
 ssize_t _setenv(char **input, ssize_t *status);
 ssize_t _unsetenv(char **input, ssize_t *status);
 int _putchar(char c);
+void quote_mode(char **temp, char *args[], int n);
+void remove_newline(char **input);
+void freedome(char *input, char *oldcwd, int read);
+
 
 #endif

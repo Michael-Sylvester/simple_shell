@@ -8,7 +8,7 @@
 int main(void)
 {
 	int start = 1;
-	size_t size = 1024;
+	size_t size = 0;
 	char *input = NULL,	 *command, *args[100], *oldcwd = NULL;
 	int status,	read;
 
@@ -18,13 +18,13 @@ int main(void)
 		initialise_shell(&input, &size);
 		read = getline(&input, &size, stdin);
 		make_token(args, input);
-		if (check_exit(input) == 0 || read == EOF)
+		if (read == 1)
 		{
-			free(input);
-			free(oldcwd);
-			start = 0;
-			exit(status);
+				free(input);
+				continue;
 		}
+		if (check_exit(input) == 0 || read == EOF)
+			freedome(input, oldcwd, read);
 		if (builtin_cd(args, &oldcwd) == 0)
 			free(input);
 		else if (check_env(args[0]) == 0)
@@ -113,4 +113,13 @@ int execute(char *command, char *args[], int *status)
 		perror("fork");
 		exit(EXIT_FAILURE);
 	}
+}
+
+void freedome(char *input,char *oldcwd, int read)
+{
+	free(input);
+	free(oldcwd);
+	if (read == -1)
+		puts("");
+	exit(EXIT_SUCCESS);
 }
