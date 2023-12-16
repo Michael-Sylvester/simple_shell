@@ -17,7 +17,10 @@ char *replace_comments(char *cmd)
 
 	unset = set - cmd;
 	modified_cmd = malloc(unset + 1);
-	/* confirm if there is comment at the start of the string or follows whitespace */
+	/*
+	 * confirm if there is comment at
+	 *the start of the string or follows whitespace
+	 */
 	if (modified_cmd == NULL)
 	{
 		fprintf(stderr, "Memory allocation error\n");

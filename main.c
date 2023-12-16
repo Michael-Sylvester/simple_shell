@@ -1,5 +1,5 @@
 #include "shell.h"
-extern char** environ;
+
 /**
  *main - initializes variables for simple shell and
  *       calls all other functions of the shell
@@ -49,13 +49,13 @@ int main(void)
 int execute(char **command, char *args[], int *status)
 {
 	pid_t child;
-	
+
 	*command = args[0];
 	if (strlen(*command) > 0)
 	{
 		if (find_path(command) == EXIT_SUCCESS)
 		{		/*execute(command, args, &status);*/
-		
+
 
 			child = fork();
 			if (child == 0)

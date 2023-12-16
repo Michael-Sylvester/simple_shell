@@ -22,7 +22,7 @@ void make_token(char *args[], char *userinput)
 		}
 		if (temp == NULL)
 			break;
-		if (*temp && (*temp == '"'|| *temp == '\''))
+		if (*temp && (*temp == '"' || *temp == '\''))
 			quote_mode(&temp, args, n);
 		else
 		{
@@ -38,6 +38,8 @@ void make_token(char *args[], char *userinput)
 /**
  *quote_mode- collect all information within quotes
  *@temp: address of pointer to token
+ *@args: argument array
+ *@n: array index
  *Return: nothing
  */
 void quote_mode(char **temp, char *args[], int n)
@@ -50,9 +52,9 @@ void quote_mode(char **temp, char *args[], int n)
 	while ((*temp) + j != NULL)
 	{
 		endquote = (*temp) + j;
-		if(*endquote == quote)
+		if (*endquote == quote)
 			break;
-		if(endquote == NULL)
+		if (endquote == NULL)
 		{
 			perror("missing terminating quote");
 			exit(-1);
