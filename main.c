@@ -1,5 +1,5 @@
 #include "shell.h"
-
+extern char** environ;
 /**
  *main - initializes variables for simple shell and
  *       calls all other functions of the shell
@@ -17,7 +17,7 @@ int main(void)
 	{
 		if (start == 1)
 			initialise_shell(&input, &size);
-		read = getline(&input, &size, stdin);
+		read = my_getline(&input, &size, STDIN_FILENO);
 		make_token(args, input);
 		if (read == 1 || sizeof(args[0]) == 1)
 		{
@@ -60,7 +60,7 @@ int execute(char **command, char *args[], int *status)
 			child = fork();
 			if (child == 0)
 			{
-				if (execve(*command, args, NULL) == -1)
+				if (execve(*command, args, environ) == -1)
 					perror("execve");
 				exit(EXIT_FAILURE);
 			}
