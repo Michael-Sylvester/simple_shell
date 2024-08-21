@@ -4,13 +4,22 @@
  *@input: the tokenized input from the user
  *Return: nothing
  */
-int check_exit(char **input)
+<<<<<<< HEAD
+int check_exit(char *input)
+=======
+void check_exit(char **input)
+>>>>>>> parent of cba0db2... compleated shell. testing env function
 {
-	char *quit = "exit";
+	char *quit = "quit";
 
-	if (**input == *quit)
-		return(0);
+<<<<<<< HEAD
+	if (strcmp(input, quit) == 0)
+		return (0);
+=======
+	if (*input == quit)
+		exit(EXIT_SUCCESS);
+>>>>>>> parent of cba0db2... compleated shell. testing env function
 
-	return (1);
+	return;
 
 }

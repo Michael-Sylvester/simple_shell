@@ -8,10 +8,10 @@ int check_env(char *input)
 {
 	char **myenv;
 	char *strenv = "env";
-	
+
 	if (strcmp(input, strenv) == 0)
 	{
-		for(myenv = environ; *myenv != NULL; myenv++)
+		for (myenv = environ; *myenv != NULL; myenv++)
 		{
 			printf("%s\n", *myenv);
 		}
