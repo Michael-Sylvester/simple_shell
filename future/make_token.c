@@ -37,7 +37,7 @@ char **split_str_char(char *input, char *delim)
 			while (isDelim(input[my_input], delim))
 				my_input++;
 			len = 0;
-			while (!isDelim(input[my_input + len], delimiter) && input[my_input + len])
+			while (!isDelim(input[my_input + len], delim) && input[my_input + len])
 				len++;
 			letters[countWord] = malloc((len + 1) * sizeof(char));
 			if (!letters[countWord])

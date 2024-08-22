@@ -12,7 +12,7 @@ int find_path(char **command)
 	char *all_path = malloc(1024);
 	char *folder = strtok(path_copy, ":");
 
-<<<<<<< HEAD
+
 	if (access(*command, F_OK) == 0 && access(*command, X_OK) == 0)
 	{/*check if the command is executable as is*/
 		free(path_copy);
@@ -21,9 +21,7 @@ int find_path(char **command)
 	}
 
 	if (all_path == NULL)
-=======
-	if(all_path == NULL)
->>>>>>> parent of cba0db2... compleated shell. testing env function
+
 	{
 		free(path_copy);
 		return (EXIT_FAILURE);

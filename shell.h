@@ -16,12 +16,12 @@
 /* Functions */
 char **split_string(char *input, char delim);
 char **split_str_char(char *input, char *delim);
-<<<<<<< HEAD
+
 void make_token(char *args[], char *userinput);
-void non_int_shell(char **input, char *args[], size_t *size, char **oldcwd);
+int non_int_shell(char **input, char *args[], size_t *size);
 int find_path(char **command);
 void initialise_shell(char **input, size_t *size);
-int check_exit(char *input);
+void check_exit(char *input);
 int check_env(char *input);
 int execute(char **command, char *args[], int *status);
 int builtin_cd(char *args[], char **old);
@@ -45,15 +45,4 @@ void quote_mode(char **temp, char *args[], int n);
 void remove_newline(char **input);
 void freedome(char *input, char *oldcwd, int read);
 
-=======
-void make_token(char *args[], char **userinput);
-int non_int_shell(char *input, char *args[], size_t *size);
-int find_path(char **command);
-void initialise_shell(char **input, size_t *size);
-void check_exit(char **input);
-int execute(char *command, char *args[], int *status);
-void builtin_cd(char *args);
-int isDelim(char character, char *delimiter);
->>>>>>> parent of cba0db2... compleated shell. testing env function
-
-#endif
+#endif 
