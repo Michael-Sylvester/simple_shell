@@ -117,7 +117,6 @@ int execute(char **command, char *args[], int *status)
 		if (find_path(command) == EXIT_SUCCESS)
 		{		/*execute(command, args, &status);*/
 
-
 			child = fork();
 			if (child == 0)
 			{
@@ -138,10 +137,11 @@ int execute(char **command, char *args[], int *status)
 		}
 		else
 		{
-			err = malloc(strlen(args[0]) + strlen(": command not found\n") + 1);
+			err = malloc(strlen(args[0]) + strlen(": No such file or directory\n") + 1);
 			strcpy(err, args[0]);
-			strcat(err, ": command not found\n");
+			strcat(err, ": No such file or directory\n");
 			write(STDOUT_FILENO, err, strlen(err));
+			free(err);
 		}
 	}
 	return (0);

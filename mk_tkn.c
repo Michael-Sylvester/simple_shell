@@ -8,7 +8,7 @@
 void make_token(char *args[], char *userinput)
 {
 	char *delimiter = " ";
-	char *temp;
+	char *temp = NULL;
 	int n = 0;
 
 	remove_newline(&userinput);
@@ -26,11 +26,12 @@ void make_token(char *args[], char *userinput)
 			quote_mode(&temp, args, n);
 		else
 		{
-			temp = replace_comments(temp);
-			args[n] = temp;
+			/*temp = replace_comments(temp);*/
+			args[n] = temp;			
 		}
 		n++;
 		temp = strsep(&userinput, delimiter);
+		
 	}
 	args[n] = NULL;
 }
