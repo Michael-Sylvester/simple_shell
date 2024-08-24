@@ -8,7 +8,7 @@ void check_exit(char *input)
 {
 	char *quit = "quit";
 
-	if (input == quit)
+	if (strcmp(input, quit) == 0)
 		exit(EXIT_SUCCESS);
 
 	return;

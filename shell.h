@@ -43,6 +43,6 @@ char *_strchr(char *str, char c);
 #define safefree(p) _free((void **)&(p))
 void quote_mode(char **temp, char *args[], int n);
 void remove_newline(char **input);
-void freedome(char *input, char *oldcwd, int read);
+void freedome(char *input, char *oldcwd);
 
 #endif 

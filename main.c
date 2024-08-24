@@ -11,7 +11,7 @@ int main(void)
 	char *input = NULL;
 	char *command;
 	char *args[100];
-	int status;
+	int status = -100;
 
 	/*if (non_int_shell(input, args, &size))
 		return (0);
@@ -19,27 +19,31 @@ int main(void)
 	while (start)
 	{
 		initialise_shell(&input, &size);
-		getline(&input, &size, stdin);
-		make_token(args, input);
-		check_exit(input);
+		status = getline(&input, &size, stdin);
+		if (status == -1)
+		{
+			write(STDOUT_FILENO, "\n", 2);
+			free(input);
+			exit(EXIT_SUCCESS);
+		}
 
+		make_token(args, input);
+		check_exit(input);		
 		command = args[0];
 		if (command != NULL)/* function to fork and execute command*/
 			execute(&command, args, &status);
 		else
 		{
 			strcpy(command, args[0]);
-			strcat(command, ": command not found\n");
+			strcat(command, ": No such file or directory\n");
 			write(STDOUT_FILENO, command, sizeof(command));
 		}
-		free(command);
-		free(input);
 	}
 		return (status);
 }
 
 /**
- *Non_int_shell - check if shell is being used non interactively
+ *non_int_shell - check if shell is being used non interactively
  *@input: the user input from stdin
  *@args:the list of arguments for the command
  *@size: size of the incoming command
@@ -65,7 +69,7 @@ int non_int_shell(char **input, char *args[], size_t *size)
 		if (find_path(&command))
 		{
 			execve(command, args, NULL);
-			 This line runs only if execve fails 
+			 This line runs only if execve fails
 			free(input);
 			perror("execve");
 			exit(EXIT_FAILURE);
@@ -80,29 +84,65 @@ int non_int_shell(char **input, char *args[], size_t *size)
  *freedome- frees the memory used by input and read
  *@input: the user input
  *@oldcwd: the last workingdurectory
- *@read: value of getline
  *Return: nothing
  */
-/*void freedome(char *input, char *oldcwd, int read)
+void freedome(char *input, char *oldcwd)
 {
-	pid_t child;
+	if (input != NULL)
+		free(input);
 
-	child = fork();
-	if (child == 0)
-	{
-		if (execve(command, args, NULL) == -1)
-			perror("exceve");
-		exit(EXIT_FAILURE);
-	}
-	else if (child > 0)
-	{
-		waitpid(child, status, 0);
-		return (0);
-	}
-	else
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
+	if (oldcwd != NULL)
+		free(oldcwd);
 }
-*/
+
+
+
+/**
+ *execute - executes commands that are viable
+ *@command: the user input from stdin
+ *@args:the list of arguments for the command
+ *@status: hold the status information about the child process
+ *Return: 0 for success and 1 error/failure
+ */
+int execute(char **command, char *args[], int *status)
+{
+	char *err;
+	pid_t child;
+	char *environ[] = {NULL};
+	*command = args[0];
+	
+
+	if (strlen(*command) > 0)
+	{
+		if (find_path(command) == EXIT_SUCCESS)
+		{		/*execute(command, args, &status);*/
+
+
+			child = fork();
+			if (child == 0)
+			{
+				if (execve(*command, args, environ) == -1)
+					perror("execve");
+				exit(EXIT_FAILURE);
+			}
+			else if (child > 0)
+			{
+				waitpid(child, status, 0);
+			}
+			else
+			{
+				perror("fork");
+				exit(EXIT_FAILURE);
+			}
+			free(*command);
+		}
+		else
+		{
+			err = malloc(strlen(args[0]) + strlen(": command not found\n") + 1);
+			strcpy(err, args[0]);
+			strcat(err, ": command not found\n");
+			write(STDOUT_FILENO, err, strlen(err));
+		}
+	}
+	return (0);
+}
