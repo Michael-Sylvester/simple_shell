@@ -13,8 +13,9 @@ int main(void)
 	char *args[100];
 	int status = -100;
 
-	/*if (non_int_shell(input, args, &size))
-		return (0);
+	/*
+	*if (non_int_shell(input, args, &size))
+		*return (0);
 	*/
 	while (start)
 	{
@@ -28,7 +29,7 @@ int main(void)
 		}
 
 		make_token(args, input);
-		check_exit(input);		
+		check_exit(input);
 		command = args[0];
 		if (command != NULL)/* function to fork and execute command*/
 			execute(&command, args, &status);
@@ -49,7 +50,7 @@ int main(void)
  *@size: size of the incoming command
  *Return: 0 for success and 1 error/failure
  */
-/*
+
 int non_int_shell(char **input, char *args[], size_t *size)
 {
 	pid_t child;
@@ -69,7 +70,7 @@ int non_int_shell(char **input, char *args[], size_t *size)
 		if (find_path(&command))
 		{
 			execve(command, args, NULL);
-			 This line runs only if execve fails
+			/*This line runs only if execve fails*/
 			free(input);
 			perror("execve");
 			exit(EXIT_FAILURE);
@@ -78,7 +79,7 @@ int non_int_shell(char **input, char *args[], size_t *size)
 	free(input);
 	return (0);
 }
-*/
+
 
 /**
  *freedome- frees the memory used by input and read
@@ -110,7 +111,7 @@ int execute(char **command, char *args[], int *status)
 	pid_t child;
 	char *environ[] = {NULL};
 	*command = args[0];
-	
+
 
 	if (strlen(*command) > 0)
 	{

@@ -27,11 +27,11 @@ void make_token(char *args[], char *userinput)
 		else
 		{
 			/*temp = replace_comments(temp);*/
-			args[n] = temp;			
+			args[n] = temp;
 		}
 		n++;
 		temp = strsep(&userinput, delimiter);
-		
+
 	}
 	args[n] = NULL;
 }
