@@ -45,4 +45,4 @@ void quote_mode(char **temp, char *args[], int n);
 void remove_newline(char **input);
 void freedome(char *input, char *oldcwd);
 
-#endif 
+#endif
