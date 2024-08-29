@@ -12,7 +12,11 @@ int find_path(char **command)
 	char *all_path = malloc(1024);
 	char *folder = strtok(path_copy, ":");
 
-
+	if (all_path == NULL)
+		{
+			perror("malloc");
+			return (EXIT_FAILURE);
+		}
 	if (access(*command, F_OK) == 0 && access(*command, X_OK) == 0)
 	{/*check if the command is executable as is*/
 		free(path_copy);
@@ -20,12 +24,6 @@ int find_path(char **command)
 		return (EXIT_SUCCESS);
 	}
 
-	if (all_path == NULL)
-
-	{
-		free(path_copy);
-		return (EXIT_FAILURE);
-	}
 	while (folder != NULL) /* Looping through to iterate */
 	{
 		strcpy(all_path, folder);
@@ -39,7 +37,9 @@ int find_path(char **command)
 		if (access(all_path, F_OK) == 0 && access(all_path, X_OK) == 0)
 		{
 			free(path_copy);
-			*command = all_path;
+			strcpy(*command, all_path);
+			free(all_path);
+			/*command = all_path;*/
 			return (EXIT_SUCCESS);
 		}
 		folder = strtok(NULL, ":"); /* Proceed to the next folder */

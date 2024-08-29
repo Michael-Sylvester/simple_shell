@@ -74,12 +74,12 @@ int non_int_shell(char *input, char *args[], size_t *size)
 		{
 			execve(command, args, NULL);
 			/*This line runs only if execve fails*/
-			free(input);
+			freedome(input, NULL);
 			perror("execve");
 			exit(EXIT_FAILURE);
 		}
 	}
-	free(input);
+	freedome(input, NULL);
 	return (0);
 }
 
@@ -92,7 +92,7 @@ int non_int_shell(char *input, char *args[], size_t *size)
  */
 void freedome(char *input, char *oldcwd)
 {
-	if (input != NULL)
+	if (input != NULL && sizeof(*input) > 0)
 		free(input);
 
 	if (oldcwd != NULL)
@@ -112,7 +112,6 @@ int execute(char **command, char *args[], int *status)
 {
 	char *err;
 	pid_t child;
-	char *environ[] = {NULL};
 	*command = args[0];
 
 
@@ -137,7 +136,8 @@ int execute(char **command, char *args[], int *status)
 				perror("fork");
 				exit(EXIT_FAILURE);
 			}
-			free(*command);
+			/*free(*command);*/
+			command = NULL;
 		}
 		else
 		{
