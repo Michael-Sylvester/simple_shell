@@ -4,6 +4,7 @@
  *@input: the user input
  *Return: 0 is successful and EXIT_FAILURE is fail
  */
+extern char **environ;
 int check_env(char *input)
 {
 	char **myenv;

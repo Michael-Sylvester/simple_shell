@@ -50,7 +50,7 @@ void quote_mode(char **temp, char *args[], int n)
 	int j = 0;
 
 	(*temp)++;
-	while ((*temp) + j != NULL)
+	while ((*temp)[j] != '\0')
 	{
 		endquote = (*temp) + j;
 		if (*endquote == quote)

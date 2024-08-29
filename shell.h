@@ -18,9 +18,9 @@ char **split_string(char *input, char delim);
 char **split_str_char(char *input, char *delim);
 
 void make_token(char *args[], char *userinput);
-int non_int_shell(char **input, char *args[], size_t *size);
+int non_int_shell(char *input, char *args[], size_t *size);
 int find_path(char **command);
-void initialise_shell(char **input, size_t *size);
+void initialise_shell(char **input, size_t *size, int interactive);
 void check_exit(char *input);
 int check_env(char *input);
 int execute(char **command, char *args[], int *status);
@@ -39,6 +39,7 @@ char *_strncpy(char *dest, const char *src, int n);
 int _isalpha(int c);
 int _strcmp(char *s1, char *s2);
 char *_strchr(char *str, char c);
+int keyword_checks(char *userinput);
 
 #define safefree(p) _free((void **)&(p))
 void quote_mode(char **temp, char *args[], int n);

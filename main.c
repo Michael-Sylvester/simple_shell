@@ -5,21 +5,18 @@
  *Return: 0 for success and 1 for faliure
  */
 int main(void)
-{
+{	
 	int start = 1;
 	size_t size = 1024;
 	char *input = NULL;
 	char *command;
 	char *args[100];
 	int status = -100;
+	int interactive = isatty(STDIN_FILENO); /*Check if running interactively*/
 
-	/*
-	*if (non_int_shell(input, args, &size))
-		*return (0);
-	*/
 	while (start)
 	{
-		initialise_shell(&input, &size);
+		initialise_shell(&input, &size, interactive);
 		status = getline(&input, &size, stdin);
 		if (status == -1)
 		{
@@ -29,7 +26,12 @@ int main(void)
 		}
 
 		make_token(args, input);
-		check_exit(input);
+		if (keyword_checks(input) == 1)
+		{
+			freedome(input, NULL);
+			continue;
+		}
+
 		command = args[0];
 		if (command != NULL)/* function to fork and execute command*/
 			execute(&command, args, &status);
@@ -39,6 +41,7 @@ int main(void)
 			strcat(command, ": No such file or directory\n");
 			write(STDOUT_FILENO, command, sizeof(command));
 		}
+		freedome(input, NULL);
 	}
 		return (status);
 }
@@ -51,9 +54,9 @@ int main(void)
  *Return: 0 for success and 1 error/failure
  */
 
-int non_int_shell(char **input, char *args[], size_t *size)
+int non_int_shell(char *input, char *args[], size_t *size)
 {
-	pid_t child;
+	/*pid_t child;*/
 	char *command;
 
 	command = args[0];
@@ -63,8 +66,8 @@ int non_int_shell(char **input, char *args[], size_t *size)
 		if (input == NULL)
 			exit(EXIT_FAILURE);
 
-		getline(input, size, stdin);
-		make_token(args, &input);
+		getline(&input, size, stdin);
+		make_token(args, input);
 		command = args[0];
 
 		if (find_path(&command))

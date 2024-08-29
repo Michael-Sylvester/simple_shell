@@ -6,7 +6,7 @@
  * @size: size of the stringbuffer
  * Return: nothing
  */
-void initialise_shell(char **input, size_t *size)
+void initialise_shell(char **input, size_t *size, int interactive)
 {
 
 	*input = malloc(*size);
@@ -16,6 +16,7 @@ void initialise_shell(char **input, size_t *size)
 		exit(EXIT_FAILURE);
 	}
 
-	write(STDOUT_FILENO, "RMshell($)", 10);
+	if (interactive)
+		write(STDOUT_FILENO, "RMshell($)", 10);
 
 }
