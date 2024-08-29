@@ -22,7 +22,7 @@ void make_token(char *args[], char *userinput)
 		}
 		if (temp == NULL)
 			break;
-		if (*temp && (*temp == '"' || *temp == '\''|| *temp == '\\'))
+		if (*temp && (*temp == '"' || *temp == '\'' || *temp == '\\'))
 			quote_mode(&temp, args, n);
 		else
 		{

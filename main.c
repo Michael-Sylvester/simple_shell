@@ -20,7 +20,8 @@ int main(void)
 		status = getline(&input, &size, stdin);
 		if (status == -1)
 		{
-			write(STDOUT_FILENO, "\n", 2);
+			if (interactive)
+				write(STDOUT_FILENO, "\n", 2);
 			free(input);
 			exit(EXIT_SUCCESS);
 		}

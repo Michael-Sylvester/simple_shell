@@ -13,10 +13,10 @@ int find_path(char **command)
 	char *folder = strtok(path_copy, ":");
 
 	if (all_path == NULL)
-		{
-			perror("malloc");
-			return (EXIT_FAILURE);
-		}
+	{
+		perror("malloc");
+		return (EXIT_FAILURE);
+	}
 	if (access(*command, F_OK) == 0 && access(*command, X_OK) == 0)
 	{/*check if the command is executable as is*/
 		free(path_copy);
