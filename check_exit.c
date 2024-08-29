@@ -9,10 +9,10 @@ void check_exit(char *input)
 	char *quit = "exit";
 
 	if (strcmp(input, quit) == 0)
-		{
-			free(input);
-			exit(EXIT_SUCCESS);
-		}
+	{
+		free(input);
+		exit(EXIT_SUCCESS);
+	}
 
 	return;
 

@@ -5,7 +5,7 @@
  *Return: 0 for success and 1 for faliure
  */
 int main(void)
-{	
+{
 	int start = 1;
 	size_t size = 1024;
 	char *input = NULL;

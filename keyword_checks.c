@@ -7,7 +7,7 @@
 int keyword_checks(char *userinput)
 {
 	check_exit(userinput);
-	if(check_env(userinput) == 0)
-		return 1;
-	return 0;
+	if (check_env(userinput) == 0)
+		return (1);
+	return (0);
 }

@@ -13,6 +13,10 @@
 
 /* Buffer */
 /*Buffer needed here for holding user input. Size 1024*/
+
+/*Environment variable*/
+extern char **environ;
+
 /* Functions */
 char **split_string(char *input, char delim);
 char **split_str_char(char *input, char *delim);
